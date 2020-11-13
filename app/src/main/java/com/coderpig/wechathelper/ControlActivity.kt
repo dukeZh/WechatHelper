@@ -1,10 +1,16 @@
 package com.coderpig.wechathelper
 
+import android.app.ActivityManager
+import android.content.Context
 import android.content.Intent
+import android.database.Cursor
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.support.v7.app.AppCompatActivity
-import com.google.gson.Gson
+import android.text.TextUtils.SimpleStringSplitter
+import android.view.accessibility.AccessibilityManager
 import com.orhanobut.hawk.Hawk
 import kotlinx.android.synthetic.main.activity_control.*
 
@@ -23,33 +29,53 @@ class ControlActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        cb_add_friends.isChecked = Hawk.get(Constant.ADD_FRIENDS,false)
-        cb_friends_square.isChecked = Hawk.get(Constant.FRIEND_SQUARE,false)
-
         btn_write.setOnClickListener {
-            val member = Gson().fromJson(ed_friends.text.toString(), Member::class.java)
-            Hawk.put(Constant.MEMBER, member)
+            val phone = ed_friends.text.toString()
+            Hawk.put(Constant.WX_PHONE, phone)
             shortToast("数据写入成功！")
         }
 
         btn_reset.setOnClickListener {
-            Hawk.put(Constant.MEMBER, Member())
+            Hawk.delete(Constant.WX_PHONE)
             ed_friends.setText("")
             shortToast("数据重置成功！")
         }
 
         btn_open_wechat.setOnClickListener {
-            val intent = packageManager.getLaunchIntentForPackage("com.tencent.mm")
-            startActivity(intent)
-        }
-        btn_open_accessbility.setOnClickListener {
-            startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
-        }
-        cb_add_friends.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) Hawk.put(Constant.ADD_FRIENDS, true) else Hawk.put(Constant.ADD_FRIENDS, false)
-        }
-        cb_friends_square.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) Hawk.put(Constant.FRIEND_SQUARE, true) else Hawk.put(Constant.FRIEND_SQUARE, false)
+            if (isAccessibilityEnabled(this))
+            {
+                if (!Hawk.contains(Constant.WX_PHONE))
+                {
+                    shortToast("当前没有手机号码！")
+                    return@setOnClickListener
+                }
+                val intent = packageManager.getLaunchIntentForPackage("com.tencent.mm")
+                if (intent == null)
+                {
+                    shortToast("当前没有安装微信！")
+                    return@setOnClickListener
+                }
+                startActivity(intent)
+            }else
+            {
+                startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+            }
         }
     }
+
+
+    @Throws(RuntimeException::class)
+    fun isAccessibilityEnabled(context: Context?): Boolean {
+        if (context == null) {
+            return false
+        }
+        // 检查AccessibilityService是否开启
+        val am = context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
+        val isAccessibilityEnabled_flag = am.isEnabled
+
+        return isAccessibilityEnabled_flag
+    }
+
+
+
 }
