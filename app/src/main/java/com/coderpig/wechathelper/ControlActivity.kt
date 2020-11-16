@@ -44,11 +44,6 @@ class ControlActivity : AppCompatActivity() {
         btn_open_wechat.setOnClickListener {
             if (isAccessibilityEnabled(this))
             {
-                if (!Hawk.contains(Constant.WX_PHONE))
-                {
-                    shortToast("当前没有手机号码！")
-                    return@setOnClickListener
-                }
                 val intent = packageManager.getLaunchIntentForPackage("com.tencent.mm")
                 if (intent == null)
                 {
