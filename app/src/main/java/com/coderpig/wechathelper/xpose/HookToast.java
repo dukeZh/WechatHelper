@@ -1,4 +1,4 @@
-package com.coderpig.wechathelper;
+package com.coderpig.wechathelper.xpose;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
@@ -9,7 +9,7 @@ public class HookToast implements IXposedHookLoadPackage {
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         if (lpparam.packageName.equals("com.coderpig.wechathelper")) {
-            Class clazz = lpparam.classLoader.loadClass("com.coderpig.wechathelper.XposedActivity");
+            Class clazz = lpparam.classLoader.loadClass("com.coderpig.wechathelper.xpose.XposedActivity");
             XposedHelpers.findAndHookMethod(clazz, "toastMessage", new XC_MethodHook() {
                 @Override
                 protected void beforeHookedMethod(MethodHookParam param) throws Throwable {

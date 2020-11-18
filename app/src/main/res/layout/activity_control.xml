@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="40dp"
-        android:hint="@string/input_group_friends_hint"
+        android:hint="@string/input_group_friends_hint1"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -46,5 +46,26 @@
         app:layout_constraintLeft_toRightOf="@id/btn_reset"
         app:layout_constraintTop_toBottomOf="@+id/ed_friends" />
 
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_get_wechat"
+        android:layout_marginStart="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="获取微信聊天记录"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_write" />
 
+    <android.support.v7.widget.AppCompatEditText
+        android:id="@+id/input_wechat"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="@string/input_group_friends_hint2"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_get_wechat" />
 </android.support.constraint.ConstraintLayout>

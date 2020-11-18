@@ -1,12 +1,12 @@
-package com.coderpig.wechathelper
+package com.coderpig.wechathelper.wechat
 
 import android.accessibilityservice.AccessibilityService
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
+import com.coderpig.wechathelper.Constant
 import com.orhanobut.hawk.Hawk
 
 
@@ -30,43 +30,39 @@ class HelperService : AccessibilityService() {
         val className = classNameChr.toString()
         Log.d(TAG, event.toString())
         when (eventType) {
+            //窗口状态改变
             AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
                 when (className) {
                     //微信主界面
                     "com.tencent.mm.ui.LauncherUI" ->
                         if (Hawk.contains(Constant.WX_PHONE)) {
                             goToAddFriends()
-                        } else {
-                            getChatList()
                         }
                     //微信搜索微信号界面
                     "com.tencent.mm.plugin.fts.ui.FTSAddFriendUI" -> addFriends()
                 }
             }
-
-            AccessibilityEvent.TYPE_VIEW_FOCUSED -> {
-                when (className) {
-                    "android.widget.ListView" ->
-                        getChatList()
-                }
-            }
-
-//            AccessibilityEvent.TYPE_VIEW_SCROLLED ->{
+//            //获取焦点
+//            AccessibilityEvent.TYPE_VIEW_FOCUSED -> {
 //                when (className) {
-//                    "android.widget.ListView"->
+//                    "android.widget.ListView" ->
 //                        getChatList()
 //                }
 //            }
         }
     }
 
+    //获取聊天记录  只能用于微信6.5.1
     private fun getChatList() {
         val nodeInfo = rootInActiveWindow
 
         if (nodeInfo != null) {
 
             val listNodes = nodeInfo.findAccessibilityNodeInfosByViewId("com.tencent.mm:id/a4l")
-
+//                while ( listNodes[0].isScrollable)
+//                {
+//                    listNodes[0].performAction(AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD)
+//                }
             if (!listNodes.isEmpty()) {
                 for (index in 0 until listNodes[0].childCount) {
 
@@ -141,11 +137,9 @@ class HelperService : AccessibilityService() {
             }, 500L)
 
         }
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//            disableSelf()
-//        }
     }
 
+    //主页  ->  添加好友
     private fun goToAddFriends() {
         val nodeInfo = rootInActiveWindow
         if (nodeInfo != null) {

@@ -1,4 +1,4 @@
-package com.coderpig.wechathelper;
+package com.coderpig.wechathelper.handler;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,7 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class HandlerThreadTestActivity extends AppCompatActivity implements View.OnClickListener {
+import com.coderpig.wechathelper.R;
+
+public class HandlerThreadTestActivity extends AppCompatActivity {
 
     private TextView text1;
     private Button button1;
@@ -129,24 +131,5 @@ public class HandlerThreadTestActivity extends AppCompatActivity implements View
         button1 = (Button) findViewById(R.id.button1);
         button2 = (Button) findViewById(R.id.button2);
         button3 = (Button) findViewById(R.id.button3);
-
-        button1.setOnClickListener(this);
-        button2.setOnClickListener(this);
-        button3.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.button1:
-
-                break;
-            case R.id.button2:
-
-                break;
-            case R.id.button3:
-
-                break;
-        }
     }
 }

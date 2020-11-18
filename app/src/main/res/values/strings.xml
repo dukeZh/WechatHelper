@@ -5,6 +5,7 @@
     <string name="open_accessibility">打开辅助功能设置页</string>
     <string name="write_into">写入</string>
     <string name="data_reset">重置</string>
-    <string name="open_wechat">打开微信</string>
-    <string name="input_group_friends_hint">输入微信号码！</string>
+    <string name="open_wechat">打开微信添加好友</string>
+    <string name="input_group_friends_hint1">输入要添加的微信号码！</string>
+    <string name="input_group_friends_hint2">输入要获取聊天记录的微信号码！</string>
 </resources>

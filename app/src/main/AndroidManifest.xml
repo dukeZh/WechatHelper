@@ -3,7 +3,8 @@
     package="com.coderpig.wechathelper">
 
     <uses-permission android:name="android.permission.GET_TASKS" />
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <application
         android:name=".HelperApp"
         android:allowBackup="true"
@@ -12,13 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ThreadUpdateUiActivity">
+        <activity android:name=".handler.ThreadUpdateUiActivity">
 
         </activity>
-        <activity android:name=".HandlerThreadTestActivity">
+        <activity android:name=".handler.HandlerThreadTestActivity">
 
         </activity>
-        <activity android:name=".XposedActivity"></activity>
+        <activity android:name=".xpose.XposedActivity"></activity>
 
         <meta-data
             android:name="xposedmodule"
@@ -30,7 +31,7 @@
             android:name="xposedminversion"
             android:value="54" />
 
-        <activity android:name=".ControlActivity" >
+        <activity android:name=".wechat.ControlActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,7 +40,7 @@
         </activity>
 
         <service
-            android:name=".HelperService"
+            android:name=".wechat.HelperService"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
