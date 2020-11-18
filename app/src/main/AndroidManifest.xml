@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.coderpig.wechathelper">
+    package="com.duke.wechathelper">
 
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <application
-        android:name=".HelperApp"
+        android:name="com.duke.wechathelper.HelperApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".handler.ThreadUpdateUiActivity">
+        <activity android:name="com.duke.wechathelper.handler.ThreadUpdateUiActivity">
 
         </activity>
-        <activity android:name=".handler.HandlerThreadTestActivity">
+        <activity android:name="com.duke.wechathelper.handler.HandlerThreadTestActivity">
 
         </activity>
-        <activity android:name=".xpose.XposedActivity"></activity>
+        <activity android:name="com.duke.wechathelper.xpose.XposedActivity"></activity>
 
         <meta-data
             android:name="xposedmodule"
@@ -31,7 +31,7 @@
             android:name="xposedminversion"
             android:value="54" />
 
-        <activity android:name=".wechat.ControlActivity" >
+        <activity android:name="com.duke.wechathelper.wechat.ControlActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,7 +40,7 @@
         </activity>
 
         <service
-            android:name=".wechat.HelperService"
+            android:name="com.duke.wechathelper.wechat.HelperService"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">

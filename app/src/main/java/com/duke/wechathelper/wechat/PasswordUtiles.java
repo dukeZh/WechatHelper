@@ -1,4 +1,4 @@
-package com.coderpig.wechathelper.wechat;
+package com.duke.wechathelper.wechat;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,8 +7,6 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
-
-import com.coderpig.wechathelper.wechat.Md5Utils;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -22,8 +20,6 @@ import java.io.OutputStream;
 import java.util.List;
 
 /**
- * @Author: zengke
- * @Date: 2018.12
  *
  */
 public class PasswordUtiles {

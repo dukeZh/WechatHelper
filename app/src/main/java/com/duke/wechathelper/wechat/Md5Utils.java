@@ -1,10 +1,8 @@
-package com.coderpig.wechathelper.wechat;
+package com.duke.wechathelper.wechat;
 
 import java.security.MessageDigest;
 
 /**
- * @Author: zengke
- * @Date: 2018.12
  *
  */
 public class Md5Utils {

@@ -1,4 +1,4 @@
-package com.coderpig.wechathelper.wechat
+package com.duke.wechathelper.wechat
 
 import android.accessibilityservice.AccessibilityService
 import android.os.Bundle
@@ -6,7 +6,7 @@ import android.os.Handler
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
-import com.coderpig.wechathelper.Constant
+import com.duke.wechathelper.Constant
 import com.orhanobut.hawk.Hawk
 
 

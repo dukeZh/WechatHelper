@@ -1,4 +1,4 @@
-package com.coderpig.wechathelper;
+package com.duke.wechathelper;
 
 import org.junit.Test;
 

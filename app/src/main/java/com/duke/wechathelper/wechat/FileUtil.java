@@ -1,4 +1,4 @@
-package com.coderpig.wechathelper.wechat;
+package com.duke.wechathelper.wechat;
 
 import android.util.Log;
 
@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * @Author: zengke
- * @Date: 2018.12
  *
  */
 public class FileUtil {

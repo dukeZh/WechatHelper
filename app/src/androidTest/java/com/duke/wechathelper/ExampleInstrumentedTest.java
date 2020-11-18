@@ -1,4 +1,4 @@
-package com.coderpig.wechathelper;
+package com.duke.wechathelper;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

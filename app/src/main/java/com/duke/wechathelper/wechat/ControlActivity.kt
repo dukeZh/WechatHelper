@@ -1,4 +1,4 @@
-package com.coderpig.wechathelper.wechat
+package com.duke.wechathelper.wechat
 import android.Manifest
 import android.content.Context
 import android.content.Intent
@@ -10,7 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.accessibility.AccessibilityManager
 import android.widget.Toast
-import com.coderpig.wechathelper.*
+import com.duke.wechathelper.*
 import com.orhanobut.hawk.Hawk
 import kotlinx.android.synthetic.main.activity_control.*
 import kotlinx.android.synthetic.main.layout_loading_dialog.*
@@ -19,7 +19,6 @@ import kotlinx.android.synthetic.main.layout_loading_dialog.*
 /**
  * 描述：辅助服务控制页
  *
- * @author CoderPig on 2018/04/12 10:50.
  */
 class ControlActivity : AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package com.coderpig.wechathelper.wechat;
+package com.duke.wechathelper.wechat;
 
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.coderpig.wechathelper.R;
+import com.duke.wechathelper.R;
 import com.tencent.wcdb.Cursor;
 import com.tencent.wcdb.database.SQLiteCipherSpec;
 import com.tencent.wcdb.database.SQLiteDatabase;

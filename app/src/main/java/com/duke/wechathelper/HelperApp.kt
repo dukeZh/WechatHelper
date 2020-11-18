@@ -1,4 +1,4 @@
-package com.coderpig.wechathelper
+package com.duke.wechathelper
 
 import android.app.Application
 import com.orhanobut.hawk.Hawk
@@ -7,7 +7,6 @@ import kotlin.properties.Delegates
 /**
  * 描述：
  *
- * @author CoderPig on 2018/04/12 11:43.
  */
 class HelperApp : Application() {
     companion object {

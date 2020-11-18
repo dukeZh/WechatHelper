@@ -1,4 +1,4 @@
-package com.coderpig.wechathelper.xpose;
+package com.duke.wechathelper.xpose;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.coderpig.wechathelper.R;
+import com.duke.wechathelper.R;
 
 public class XposedActivity extends AppCompatActivity {
 

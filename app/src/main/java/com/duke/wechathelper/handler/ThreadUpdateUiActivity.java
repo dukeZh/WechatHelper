@@ -1,4 +1,4 @@
-package com.coderpig.wechathelper.handler;
+package com.duke.wechathelper.handler;
 
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.coderpig.wechathelper.R;
+import com.duke.wechathelper.R;
 
 public class ThreadUpdateUiActivity extends AppCompatActivity implements View.OnClickListener {
     private Button update_handler;

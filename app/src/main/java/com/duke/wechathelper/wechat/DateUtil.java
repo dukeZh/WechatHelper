@@ -1,13 +1,10 @@
-package com.coderpig.wechathelper.wechat;
+package com.duke.wechathelper.wechat;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * @Author: zengke
- * @Date: 2018.12
- *
  */
 public class DateUtil {
     public static final String NULL="null";
