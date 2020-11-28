@@ -160,4 +160,8 @@ class HelperService : AccessibilityService() {
             }
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
 }

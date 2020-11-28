@@ -1,5 +1,6 @@
 package com.duke.wechathelper.wechat;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
@@ -13,9 +14,11 @@ import com.tencent.wcdb.database.SQLiteDatabase;
 import com.threekilogram.objectbus.bus.ObjectBus;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class MyTask extends AsyncTask<String, String, String> {
 
+    @SuppressLint("StaticFieldLeak")
     private ControlActivity controlActivity;
 
     //sql 语句
@@ -37,7 +40,7 @@ public class MyTask extends AsyncTask<String, String, String> {
      * 拷贝到sd 卡的路径
      */
     public String copyPath = Environment.getExternalStorageDirectory().getPath() + "/";
-    String copyFilePath = copyPath + COPY_WX_DATA_DB;
+    public String copyFilePath = copyPath + COPY_WX_DATA_DB;
 
 
     public MyTask(ControlActivity activity) {
@@ -65,7 +68,13 @@ public class MyTask extends AsyncTask<String, String, String> {
             Log.e("path===", path);
             Log.e("path", password);
             if (password.equals("")) {
-                getUploadTimeError("密码获取失败");
+                controlActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        getUploadTimeError("密码获取失败");
+                    }
+                });
+                return "";
             }
             //微信原始数据库的地址
             File wxDataDir = new File(path);
@@ -112,6 +121,7 @@ public class MyTask extends AsyncTask<String, String, String> {
 
     /**
      * 连接复制的微信数据库
+     *
      * @param controlActivity
      * @param db
      */
@@ -119,18 +129,71 @@ public class MyTask extends AsyncTask<String, String, String> {
         TASK.toPool(new Runnable() {
             @Override
             public void run() {
+                getRecontactData(db);
                 getReMessageData(controlActivity, db);
             }
         }).toMain(new Runnable() {
             @Override
             public void run() {
-                //Toast.makeText(mContext, "文件导出完毕完毕", Toast.LENGTH_LONG).show();
+                controlActivity.loadingDialog.setCancelable(true);
+                TextView textView = controlActivity.loadingDialog.findViewById(R.id.text);
+                textView.setText("微信成功导出聊天记录");
+                controlActivity.loadingDialog.findViewById(R.id.loadingView).setVisibility(View.INVISIBLE);
+                controlActivity.loadingDialog.findViewById(R.id.iv_success).setVisibility(View.VISIBLE);
+                controlActivity.loadingDialog.findViewById(R.id.iv_fail).setVisibility(View.INVISIBLE);
             }
         }).run();
     }
 
     /**
+     * 获取当前用户的微信所有联系人
+     */
+    private void getRecontactData(SQLiteDatabase db) {
+        Cursor cursor1 = null;
+        try {
+            //新建文件保存联系人信息
+            // file1 = new File(Environment.getExternalStorageDirectory().getPath() + "/" + et_name.getText().toString().trim() + "ΞcontactΞfile" + ".csv");
+            // BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file1), "UTF-8"));
+            // contactCsvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT.withHeader("userName", "nickName", "alias", "conRemark", "type"));
+            // 查询所有联系人verifyFlag!=0:公众号等类型，群里面非好友的类型为4，未知类型2）
+            cursor1 = db.rawQuery(contactSql, null);
+            while (cursor1.moveToNext()) {
+
+                //一开始的微信id
+                String userName = cursor1.getString(cursor1.getColumnIndex("username"));
+                //网名
+                String nickName = cursor1.getString(cursor1.getColumnIndex("nickname"));
+                //微信id
+                String alias = cursor1.getString(cursor1.getColumnIndex("alias"));
+                //备注
+                String conRemark = cursor1.getString(cursor1.getColumnIndex("conRemark"));
+                String type = cursor1.getString(cursor1.getColumnIndex("type"));
+                Log.d("contact", "userName=" + userName + "\n nickName=" + nickName + "\n alias=" + alias + "\n conRemark=" + conRemark + "\n type=" + type);
+                //将联系人信息写入 csv 文件
+                //contactCsvPrinter.printRecord(FilterUtil.filterEmoji(userName), FilterUtil.filterEmoji(nickName), FilterUtil.filterEmoji(alias), FilterUtil.filterEmoji(conRemark), type);
+            }
+            // contactCsvPrinter.printRecord();
+            // contactCsvPrinter.flush();
+            //上传联系人
+            //   upLoadFiles(baseUrl + "contact/import?uploadTime=" + currentTime, file1, 1);
+        } catch (Exception e) {
+            Log.e("openWxDb", "读取数据库信息失败" + e.toString());
+            controlActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    getUploadTimeError("读取数据库信息失败");
+                }
+            });
+        } finally {
+            if (cursor1 != null) {
+                cursor1.close();
+            }
+        }
+    }
+
+    /**
      * 获取聊天记录
+     *
      * @param controlActivity
      * @param db
      */
@@ -182,7 +245,6 @@ public class MyTask extends AsyncTask<String, String, String> {
                     }
                 }
             }
-
         } catch (Exception e) {
             Log.e("openWxDb", "读取数据库信息失败" + e.toString());
             controlActivity.runOnUiThread(new Runnable() {
@@ -192,37 +254,30 @@ public class MyTask extends AsyncTask<String, String, String> {
                 }
             });
         }
-        controlActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                controlActivity.loadingDialog.setCancelable(true);
-                TextView textView = controlActivity.loadingDialog.findViewById(R.id.text);
-                textView.setText("微信成功导出聊天记录");
-                controlActivity.loadingDialog.findViewById(R.id.loadingView).setVisibility(View.INVISIBLE);
-                controlActivity.loadingDialog.findViewById(R.id.iv_success).setVisibility(View.VISIBLE);
-                controlActivity.loadingDialog.findViewById(R.id.iv_fail).setVisibility(View.INVISIBLE);
-            }
-        });
     }
 
-    private void getUploadTimeError(final String errormessage) {
-        controlActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                controlActivity.loadingDialog.setCancelable(true);
-                TextView textView = controlActivity.loadingDialog.findViewById(R.id.text);
-                textView.setText(errormessage);
-                controlActivity.loadingDialog.findViewById(R.id.loadingView).setVisibility(View.INVISIBLE);
-                controlActivity.loadingDialog.findViewById(R.id.iv_success).setVisibility(View.INVISIBLE);
-                controlActivity.loadingDialog.findViewById(R.id.iv_fail).setVisibility(View.VISIBLE);
-            }
-        });
+    private void getUploadTimeError(String errormessage) {
+        controlActivity.loadingDialog.setCancelable(true);
+        TextView textView = controlActivity.loadingDialog.findViewById(R.id.text);
+        textView.setText(errormessage);
+        controlActivity.loadingDialog.findViewById(R.id.loadingView).setVisibility(View.INVISIBLE);
+        controlActivity.loadingDialog.findViewById(R.id.iv_success).setVisibility(View.INVISIBLE);
+        controlActivity.loadingDialog.findViewById(R.id.iv_fail).setVisibility(View.VISIBLE);
     }
 
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        //完成后消失
-        // loadingDialog.dismiss();
+    }
+
+    //创建接口，成功时候回调
+    private OnSuccessListener onSuccessListener;
+
+    public interface OnSuccessListener {
+        void onChatSuccess(ArrayList<String> stringArrayList);
+    }
+
+    public void setOnSuccessListener(OnSuccessListener onSuccessListener) {
+        this.onSuccessListener = onSuccessListener;
     }
 }

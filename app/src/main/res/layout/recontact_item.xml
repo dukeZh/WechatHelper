@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="用户名：喜闻乐见" />
+
+    <TextView
+        android:id="@+id/wx_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="微信号：zh806300" />
+
+    <TextView
+        android:id="@+id/wx_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="微信id：zh806300" />
+
+    <TextView
+        android:id="@+id/wx_mark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="微信备注：zh806300" />
+</LinearLayout>

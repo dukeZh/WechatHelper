@@ -7,6 +7,9 @@ import android.os.Bundle
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.view.accessibility.AccessibilityManager
 import android.widget.Toast
@@ -14,14 +17,14 @@ import com.duke.wechathelper.*
 import com.orhanobut.hawk.Hawk
 import kotlinx.android.synthetic.main.activity_control.*
 import kotlinx.android.synthetic.main.layout_loading_dialog.*
+import java.util.ArrayList
 
 
 /**
  * 描述：辅助服务控制页
  *
  */
-class ControlActivity : AppCompatActivity() {
-
+class ControlActivity : AppCompatActivity() ,MyTask.OnSuccessListener{
     lateinit var loadingDialog: CustomDialog
     val WXPACKAGENAME = "com.tencent.mm"
 
@@ -51,7 +54,7 @@ class ControlActivity : AppCompatActivity() {
         btn_open_wechat.setOnClickListener {
             if (isAccessibilityEnabled(this))
             {
-                val intent = packageManager.getLaunchIntentForPackage("com.tencent.mm")
+                val intent = packageManager.getLaunchIntentForPackage("com.jingdong.app.mall")
                 if (intent == null)
                 {
                     shortToast("当前没有安装微信！")
@@ -67,7 +70,6 @@ class ControlActivity : AppCompatActivity() {
         btn_get_wechat.setOnClickListener {
 
             // Check if we have write permission
-            // Check if we have write permission
             val permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
             val permission2 = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
             if (permission != PackageManager.PERMISSION_GRANTED || permission2 != PackageManager.PERMISSION_GRANTED) {
@@ -77,14 +79,21 @@ class ControlActivity : AppCompatActivity() {
             }
             getWxChatList()
         }
+        val layoutManager = LinearLayoutManager(this)
+        layoutManager.orientation = LinearLayoutManager.VERTICAL
+        // layoutManager
+        recyclerview.layoutManager = layoutManager
+
+        // itemDecoration
+        val itemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        itemDecoration.setDrawable(resources.getDrawable(R.drawable.divider_line))
+        recyclerview.addItemDecoration(itemDecoration)
+
+        // animation
+        recyclerview.itemAnimator = DefaultItemAnimator()
     }
 
     private fun getWxChatList() {
-        //判断姓名是否为空
-        if ( input_wechat.getText().toString().isEmpty()) {
-            Toast.makeText(this, "请先输入您的微信号!", Toast.LENGTH_SHORT).show()
-            return
-        }
         //判断是否安装了微信
         if (isWeixinAvilible()) {
             loadingDialog = CustomDialog(this, R.style.customDialog, R.layout.layout_loading_dialog)
@@ -94,7 +103,12 @@ class ControlActivity : AppCompatActivity() {
             loadingDialog.loadingView.visibility = View.VISIBLE
             loadingDialog.iv_success.visibility = View.INVISIBLE
             loadingDialog.iv_fail.visibility = View.INVISIBLE
-            MyTask(this).execute()
+            runOnUiThread {
+                val myTask = MyTask(this)
+                myTask.setOnSuccessListener(this)
+                myTask.execute()
+            }
+
         } else {
             runOnUiThread { Toast.makeText(this, "请先安装微信", Toast.LENGTH_SHORT).show() }
         }
@@ -131,4 +145,9 @@ class ControlActivity : AppCompatActivity() {
 
         return isAccessibilityEnabled_flag
     }
+
+    override fun onChatSuccess(allBeanArrayList: ArrayList<String>?) {
+        TODO("Not yet implemented")
+    }
 }
+
