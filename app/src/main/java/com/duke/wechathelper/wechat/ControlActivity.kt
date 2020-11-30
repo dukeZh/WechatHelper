@@ -7,17 +7,16 @@ import android.os.Bundle
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.view.accessibility.AccessibilityManager
 import android.widget.Toast
-import com.duke.wechathelper.*
+import com.duke.wechathelper.Constant
+import com.duke.wechathelper.R
+import com.duke.wechathelper.shortToast
 import com.orhanobut.hawk.Hawk
 import kotlinx.android.synthetic.main.activity_control.*
 import kotlinx.android.synthetic.main.layout_loading_dialog.*
-import java.util.ArrayList
+import java.util.*
 
 
 /**
@@ -68,7 +67,7 @@ class ControlActivity : AppCompatActivity() ,MyTask.OnSuccessListener{
         }
 
         btn_get_wechat.setOnClickListener {
-
+         //   Hawk.put<String>("wx_password", "8d5a66d")
             // Check if we have write permission
             val permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
             val permission2 = ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -79,18 +78,6 @@ class ControlActivity : AppCompatActivity() ,MyTask.OnSuccessListener{
             }
             getWxChatList()
         }
-        val layoutManager = LinearLayoutManager(this)
-        layoutManager.orientation = LinearLayoutManager.VERTICAL
-        // layoutManager
-        recyclerview.layoutManager = layoutManager
-
-        // itemDecoration
-        val itemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-        itemDecoration.setDrawable(resources.getDrawable(R.drawable.divider_line))
-        recyclerview.addItemDecoration(itemDecoration)
-
-        // animation
-        recyclerview.itemAnimator = DefaultItemAnimator()
     }
 
     private fun getWxChatList() {

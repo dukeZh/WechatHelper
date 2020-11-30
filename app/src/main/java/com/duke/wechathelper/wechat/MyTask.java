@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.duke.wechathelper.R;
+import com.orhanobut.hawk.Hawk;
 import com.tencent.wcdb.Cursor;
 import com.tencent.wcdb.database.SQLiteCipherSpec;
 import com.tencent.wcdb.database.SQLiteDatabase;
@@ -35,12 +36,12 @@ public class MyTask extends AsyncTask<String, String, String> {
     public final String WX_ROOT_PATH = "/data/data/com.tencent.mm/";
     public final String WX_DB_DIR_PATH = WX_ROOT_PATH + "MicroMsg";
     public final String WX_DB_FILE_NAME = "EnMicroMsg.db";
-    public final String COPY_WX_DATA_DB = "wx_data.db";
+    public final String COPY_WX_DATA_DB = System.currentTimeMillis()+"wx_data.db";
     /**
      * 拷贝到sd 卡的路径
      */
     public String copyPath = Environment.getExternalStorageDirectory().getPath() + "/";
-    public String copyFilePath = copyPath + COPY_WX_DATA_DB;
+    public String copyFilePath = copyPath + COPY_WX_DATA_DB ;
 
 
     public MyTask(ControlActivity activity) {
@@ -55,18 +56,15 @@ public class MyTask extends AsyncTask<String, String, String> {
 
     @Override
     protected String doInBackground(String... strings) {
-        //获取root权限
-        PasswordUtiles.execRootCmd("chmod 777 -R " + WX_ROOT_PATH);
-        //获取root权限
-        PasswordUtiles.execRootCmd("chmod 777 -R " + copyFilePath);
 
-        String password = PasswordUtiles.initDbPassword(controlActivity);
-        String uid = PasswordUtiles.initCurrWxUin(controlActivity);
-        try {
-            String path = WX_DB_DIR_PATH + "/" + Md5Utils.md5Encode("mm" + uid) + "/" + WX_DB_FILE_NAME;
-            Log.e("path", copyFilePath);
-            Log.e("path===", path);
-            Log.e("path", password);
+        String password = Hawk.get("wx_password");
+        if (password == null || password.isEmpty())
+        {
+            //获取root权限
+         //   PasswordUtiles.execRootCmd("chmod 777 -R " + WX_ROOT_PATH);
+            //获取root权限
+         //   PasswordUtiles.execRootCmd("chmod 777 -R " + copyFilePath);
+            password  = PasswordUtiles.initDbPassword(controlActivity);
             if (password.equals("")) {
                 controlActivity.runOnUiThread(new Runnable() {
                     @Override
@@ -75,7 +73,17 @@ public class MyTask extends AsyncTask<String, String, String> {
                     }
                 });
                 return "";
+            }else
+            {
+                Hawk.put("wx_password",password);
             }
+        }
+        String uid = PasswordUtiles.initCurrWxUin(controlActivity);
+        try {
+            String path = WX_DB_DIR_PATH + "/" + Md5Utils.md5Encode("mm" + uid) + "/" + WX_DB_FILE_NAME;
+            Log.e("path", copyFilePath);
+            Log.e("path===", path);
+            Log.e("path", password);
             //微信原始数据库的地址
             File wxDataDir = new File(path);
             //将微信数据库拷贝出来，因为直接连接微信的db，会导致微信崩溃

@@ -57,8 +57,7 @@ public class PasswordUtiles {
                 return "";
             }
             String md5 = Md5Utils.md5Encode(imei + uin);
-            String password = md5.substring(0, 7).toLowerCase();
-            return password;
+            return md5.substring(0, 7).toLowerCase();
         } catch (Exception e) {
             Log.e("initDbPassword", e.getMessage());
         }
