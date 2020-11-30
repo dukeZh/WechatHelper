@@ -91,9 +91,17 @@ class ControlActivity : AppCompatActivity() ,MyTask.OnSuccessListener{
             loadingDialog.iv_success.visibility = View.INVISIBLE
             loadingDialog.iv_fail.visibility = View.INVISIBLE
             runOnUiThread {
-                val myTask = MyTask(this)
-                myTask.setOnSuccessListener(this)
-                myTask.execute()
+                if (Hawk.contains("last_up_time"))
+                {
+                    val myTask = MyTask(this,Hawk.get("last_up_time"))
+                    myTask.setOnSuccessListener(this)
+                    myTask.execute()
+                }else
+                {
+                    val myTask = MyTask(this)
+                    myTask.setOnSuccessListener(this)
+                    myTask.execute()
+                }
             }
 
         } else {
